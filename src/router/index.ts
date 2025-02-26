@@ -8,12 +8,6 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '首页', icon: 'HomeFilled' }
     },
     {
-        path: '/order',
-        name: 'Order',
-        component: () => import('@/views/order/Order.vue'),
-        meta: { title: '工单', icon: 'List' }
-    },
-    {
         path: '/login',
         name: 'Login',
         component: () => import('@/views/Login.vue')

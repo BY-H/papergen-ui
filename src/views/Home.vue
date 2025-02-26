@@ -1,5 +1,7 @@
 <template>
-    <div>Cyclopropane</div>
+    <div>Papergen</div>
 </template>
-<script lang="ts" name="Home" setup></script>
+<script lang="ts" name="Home" setup>
+
+</script>
 <style scoped></style>

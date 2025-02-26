@@ -7,3 +7,7 @@ export function login(data: object) {
         data
     })
 }
+
+export function register(data: object) {
+    return request({})
+}
