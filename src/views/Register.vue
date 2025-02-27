@@ -2,7 +2,7 @@
     <div class="login-wrapper">
         <div class="login-container">
             <div class="form-header">
-                <h2>用户登录</h2>
+                <h2>用户注册</h2>
                 <p>欢迎回来，请登录您的账号</p>
             </div>
             <form class="floating-form" @submit.prevent="handleLogin">
@@ -17,18 +17,18 @@
                     <span class="highlight"></span>
                 </div>
                 <button type="submit" class="submit-btn" :disabled="!isFormValid">
-                    <span>登录</span>
+                    <span>注册</span>
                     <i class="arrow-icon"></i>
                 </button>
                 <div class="form-footer">
-                    <span>还没有账号？</span>
-                    <a href="/register">立即注册</a>
+                    <span>已经有账号？</span>
+                    <a href="/login">立即登录</a>
                 </div>
             </form>
         </div>
     </div>
 </template>
-<script lang="ts" name="Login" setup>
+<script lang="ts" name="Register" setup>
 import { ref, reactive, computed } from 'vue'
 import { login } from '@/api/user'
 import { setToken } from '@/utils/auth'
