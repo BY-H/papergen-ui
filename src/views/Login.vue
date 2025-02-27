@@ -5,7 +5,7 @@
                 <h2>用户登录</h2>
                 <p>欢迎回来，请登录您的账号</p>
             </div>
-            <form @submit.prevent="" class="floating-form">
+            <form @submit.prevent="handleLogin" class="floating-form">
                 <div class="input-group">
                     <input id="username" type="text" autocomplete="off" required />
                     <label for="username">用户名</label>
@@ -30,30 +30,22 @@
     </div>
 </template>
 <script lang="ts" name="Login" setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { login } from '@/api/user'
 import { setToken } from '@/utils/auth'
 import { useRouter } from 'vue-router'
-const loginForm = reactive({
-    email: '',
-    password: ''
-})
 const router = useRouter()
 
 const errorMsg = ref('')
 
-const submitForm = async () => {
-    const res = await login(loginForm)
-    if (res == undefined) {
-        // 无返回 token 清空输入框
-        loginForm.email = ''
-        loginForm.password = ''
-    } else {
-        const token: string = (res as any).token
-        setToken(token)
-        router.push({ name: 'Home' })
-    }
-}
+const form = reactive({
+    username: '',
+    password: ''
+})
+
+const isFormValid = computed(() => {
+    return form.username && form.password
+})
 
 // 错误提示
 const errorMessage = (text: string) => {
@@ -61,6 +53,16 @@ const errorMessage = (text: string) => {
     setTimeout(() => {
         errorMsg.value = ''
     }, 3000)
+}
+
+const handleLogin = async () => {
+    try {
+        const response = await login(form.username, form.password)
+        setToken(response.data.token)
+        router.push({ path: '/' })
+    } catch (error) {
+        errorMessage('用户名或密码错误')
+    }
 }
 </script>
 <style scoped>
