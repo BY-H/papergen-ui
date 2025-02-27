@@ -15,7 +15,7 @@ export function setToken(token: string) {
 export function isTokenValid(): boolean {
     const token = getToken()
 
-    if (!token) {
+    if (!token || token === '') {
         return false
     }
 

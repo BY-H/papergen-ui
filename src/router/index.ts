@@ -1,4 +1,5 @@
 import { createRouter, createMemoryHistory, type RouteRecordRaw } from 'vue-router'
+import { isTokenValid } from '@/utils/auth'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -17,6 +18,19 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
     routes,
     history: createMemoryHistory()
+})
+
+router.beforeEach(async (to, from, next) => {
+    if (to.path === '/login') {
+        next()
+        return
+    }
+
+    if (isTokenValid()) {
+        next()
+    } else {
+        next({ name: 'Login' })
+    }
 })
 
 export default router
