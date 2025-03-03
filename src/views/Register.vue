@@ -3,7 +3,7 @@
         <div class="login-container">
             <div class="form-header">
                 <h2>用户注册</h2>
-                <p>欢迎回来，请登录您的账号</p>
+                <p>您好，请注册您的账号</p>
             </div>
             <form class="floating-form" @submit.prevent="handleLogin">
                 <div class="input-group">
@@ -22,7 +22,7 @@
                 </button>
                 <div class="form-footer">
                     <span>已经有账号？</span>
-                    <a href="/login">立即登录</a>
+                    <el-link @click="jumpToLogin">立即登录</el-link>
                 </div>
             </form>
         </div>
@@ -52,6 +52,10 @@ const handleLogin = async () => {
     const response = await login(user)
     setToken(response.data.token)
     router.push({ path: '/' })
+}
+
+const jumpToLogin = () => {
+    router.push({ path: '/login' })
 }
 </script>
 <style scoped>

@@ -22,7 +22,7 @@
                 </button>
                 <div class="form-footer">
                     <span>还没有账号？</span>
-                    <a href="/register">立即注册</a>
+                    <el-link @click="jumpToRegister">立即注册</el-link>
                 </div>
             </form>
         </div>
@@ -52,6 +52,10 @@ const handleLogin = async () => {
     const response = await login(user)
     setToken(response.data.token)
     router.push({ path: '/' })
+}
+
+const jumpToRegister = () => {
+    router.push({ name: 'Register' })
 }
 </script>
 <style scoped>
