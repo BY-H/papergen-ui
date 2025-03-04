@@ -23,7 +23,11 @@ function handleAxiosError(error: any) {
             503: '服务暂时不可用',
             504: '网关超时'
         }
-        ElMessage.error(errorMap[status] || `请求失败: ${status}`)
+        if (error.response.data.error) {
+            ElMessage.error(error.response.data.error)
+        } else {
+            ElMessage.error(errorMap[status] || `请求失败: ${status}`)
+        }
     } else {
         ElMessage.error('网络连接异常')
     }

@@ -49,9 +49,9 @@ const handleLogin = async () => {
         email: form.email,
         password: form.password
     }
-    const response = await login(user)
-    setToken(response.data.token)
-    router.push({ path: '/' })
+    const response: any = await login(user)
+    setToken(response.token)
+    router.push({ name: 'Home' })
 }
 
 const jumpToRegister = () => {

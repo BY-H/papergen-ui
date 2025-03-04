@@ -8,7 +8,7 @@
             <form class="floating-form" @submit.prevent="handleRegister">
                 <div class="input-group">
                     <input id="username" type="text" autocomplete="off" required v-model="form.email" />
-                    <label for="username">Email</label>
+                    <label for="username">邮箱</label>
                     <span class="highlight"></span>
                 </div>
                 <div class="input-group">
@@ -33,6 +33,7 @@ import { ref, reactive, computed } from 'vue'
 import { register } from '@/api/user'
 import { setToken } from '@/utils/auth'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 
 const form = reactive({
@@ -50,8 +51,13 @@ const handleRegister = async () => {
         password: form.password
     }
     const response = await register(user)
-    setToken(response.data.token)
-    router.push({ path: '/' })
+    console.log(response)
+    if (response.status === 200) {
+        ElMessage.info('注册成功，请登录')
+        router.push({ path: '/login' })
+    } else {
+        ElMessage.error('注册失败，请重试')
+    }
 }
 
 const jumpToLogin = () => {
