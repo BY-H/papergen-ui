@@ -5,10 +5,10 @@
                 <h2>用户注册</h2>
                 <p>您好，请注册您的账号</p>
             </div>
-            <form class="floating-form" @submit.prevent="handleLogin">
+            <form class="floating-form" @submit.prevent="handleRegister">
                 <div class="input-group">
-                    <input id="username" type="text" autocomplete="off" required v-model="form.username" />
-                    <label for="username">用户名</label>
+                    <input id="username" type="text" autocomplete="off" required v-model="form.email" />
+                    <label for="username">Email</label>
                     <span class="highlight"></span>
                 </div>
                 <div class="input-group">
@@ -30,26 +30,26 @@
 </template>
 <script lang="ts" name="Register" setup>
 import { ref, reactive, computed } from 'vue'
-import { login } from '@/api/user'
+import { register } from '@/api/user'
 import { setToken } from '@/utils/auth'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const form = reactive({
-    username: '',
+    email: '',
     password: ''
 })
 
 const isFormValid = computed(() => {
-    return form.username && form.password
+    return form.email && form.password
 })
 
-const handleLogin = async () => {
+const handleRegister = async () => {
     const user = {
-        username: form.username,
+        email: form.email,
         password: form.password
     }
-    const response = await login(user)
+    const response = await register(user)
     setToken(response.data.token)
     router.push({ path: '/' })
 }

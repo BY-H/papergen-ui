@@ -9,5 +9,9 @@ export function login(data: object) {
 }
 
 export function register(data: object) {
-    return request({})
+    return request({
+        url: '/register',
+        method: 'POST',
+        data
+    })
 }

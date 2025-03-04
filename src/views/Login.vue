@@ -7,8 +7,8 @@
             </div>
             <form class="floating-form" @submit.prevent="handleLogin">
                 <div class="input-group">
-                    <input id="username" type="text" autocomplete="off" required v-model="form.username" />
-                    <label for="username">用户名</label>
+                    <input id="username" type="text" autocomplete="off" required v-model="form.email" />
+                    <label for="username">邮箱</label>
                     <span class="highlight"></span>
                 </div>
                 <div class="input-group">
@@ -36,17 +36,17 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const form = reactive({
-    username: '',
+    email: '',
     password: ''
 })
 
 const isFormValid = computed(() => {
-    return form.username && form.password
+    return form.email && form.password
 })
 
 const handleLogin = async () => {
     const user = {
-        username: form.username,
+        email: form.email,
         password: form.password
     }
     const response = await login(user)
