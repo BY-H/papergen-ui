@@ -39,11 +39,6 @@
                 </el-card>
             </el-col>
         </el-row>
-        <el-row :gutter="20" class="nav-row">
-            <el-col :span="24">
-                <el-button type="primary" @click="goToQuestions">查看题目列表</el-button>
-            </el-col>
-        </el-row>
     </div>
 </template>
 
@@ -75,7 +70,7 @@ const goToQuestions = () => {
 }
 
 .stats-row {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .nav-row {
