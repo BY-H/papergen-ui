@@ -22,13 +22,13 @@ const routes: RouteRecordRaw[] = [
         path: '/question',
         name: 'Question',
         component: () => import('@/views/Question.vue'),
-        meta: { title: '试题', icon: 'List' }
+        meta: { title: '题库管理', icon: 'List' }
     },
     {
         path: '/paper',
         name: 'Paper',
         component: () => import('@/views/Paper.vue'),
-        meta: { title: '试卷', icon: 'Paperclip' }
+        meta: { title: '出题历史', icon: 'Paperclip' }
     }
 ]
 
