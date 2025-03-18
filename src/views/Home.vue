@@ -39,16 +39,34 @@
                 </el-card>
             </el-col>
         </el-row>
+        <el-row :gutter="20" class="announcement-row">
+            <el-col :span="24">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <el-icon><i class="el-icon-bell"></i></el-icon>
+                        <span>系统公告</span>
+                    </div>
+                    <el-alert v-for="(announcement, index) in announcements" :key="index" :title="announcement.title" type="info" show-icon :description="announcement.description" class="announcement-item" />
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
 
 const goToQuestions = () => {
     router.push({ name: 'Question' })
 }
+
+const announcements = ref([
+    { title: '系统维护通知', description: '系统将于2025年3月20日凌晨2点进行维护，预计持续2小时。' },
+    { title: '新功能上线', description: '我们新增了试卷自动生成功能，欢迎体验。' }
+])
 </script>
 
 <style scoped>
@@ -78,6 +96,10 @@ const goToQuestions = () => {
     text-align: center;
 }
 
+.announcement-row {
+    margin-top: 20px;
+}
+
 .text {
     font-size: 24px;
     text-align: center;
@@ -102,5 +124,9 @@ const goToQuestions = () => {
     font-size: 20px;
     font-weight: bold;
     color: #409eff;
+}
+
+.announcement-item {
+    margin-top: 10px;
 }
 </style>
