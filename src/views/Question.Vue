@@ -40,7 +40,7 @@ interface Question {
     tag: string
     creator: string
 }
-const total = ref(3)
+const total = ref(10)
 const pageObj = ref({
     page: 1,
     page_size: 20
@@ -50,9 +50,106 @@ const onUpdate = () => {
 }
 
 const questions = ref<Question[]>([
-    { id: 1, question: '若机器字长为16位，可表示的无符号数范围为：______。', question_type: '选择题', answer: '0-65535', hard_level: 1, score: 5, tag: '数学', creator: '张三' },
-    { id: 2, question: '题目2', question_type: '填空题', answer: '42', hard_level: 2, score: 10, tag: '物理', creator: '李四' },
-    { id: 3, question: '题目3', question_type: '判断题', answer: '正确', hard_level: 3, score: 15, tag: '化学', creator: '王五' }
+    {
+        id: 1,
+        question: '若机器字长为16位，可表示的无符号数范围为：______。',
+        question_type: '填空题',
+        answer: '0-65535',
+        hard_level: 1,
+        score: 5,
+        tag: '计算机组成原理',
+        creator: '张三'
+    },
+    {
+        id: 2,
+        question: '在TCP/IP协议中，HTTP协议默认使用的端口号是：______。',
+        question_type: '填空题',
+        answer: '80',
+        hard_level: 2,
+        score: 10,
+        tag: '计算机网络',
+        creator: '李四'
+    },
+    {
+        id: 3,
+        question: 'Python中，用于定义类的关键字是：______。',
+        question_type: '填空题',
+        answer: 'class',
+        hard_level: 1,
+        score: 5,
+        tag: '编程语言',
+        creator: '王五'
+    },
+    {
+        id: 4,
+        question: '在关系型数据库中，用于从表中查询数据的关键字是：______。',
+        question_type: '填空题',
+        answer: 'SELECT',
+        hard_level: 2,
+        score: 10,
+        tag: '数据库',
+        creator: '赵六'
+    },
+    {
+        id: 5,
+        question: '在HTML中，用于定义超链接的标签是：______。',
+        question_type: '填空题',
+        answer: '<a>',
+        hard_level: 1,
+        score: 5,
+        tag: '前端开发',
+        creator: '孙七'
+    },
+    {
+        id: 6,
+        question: '在JavaScript中，用于声明变量的关键字是：______。',
+        question_type: '填空题',
+        answer: 'let',
+        hard_level: 1,
+        score: 5,
+        tag: '编程语言',
+        creator: '周八'
+    },
+    {
+        id: 7,
+        question: '在Linux系统中，用于查看当前目录路径的命令是：______。',
+        question_type: '填空题',
+        answer: 'pwd',
+        hard_level: 2,
+        score: 10,
+        tag: '操作系统',
+        creator: '吴九'
+    },
+    {
+        id: 8,
+        question: '在C语言中，用于动态分配内存的函数是：______。',
+        question_type: '填空题',
+        answer: 'malloc',
+        hard_level: 3,
+        score: 15,
+        tag: '编程语言',
+        creator: '郑十'
+    },
+    {
+        id: 9,
+        question: '在Git中，用于克隆远程仓库的命令是：______。',
+        question_type: '填空题',
+        answer: 'git clone',
+        hard_level: 2,
+        score: 10,
+        tag: '版本控制',
+        creator: '王十一'
+    },
+    {
+        id: 10,
+        question: '在Java中，用于表示单行注释的符号是：______。',
+        question_type: '填空题',
+        answer: '//',
+        hard_level: 1,
+        score: 5,
+        tag: '编程语言',
+        creator: '李十二'
+    }
 ])
 
 const handleAdd = () => {

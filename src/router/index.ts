@@ -25,10 +25,22 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '题库管理', icon: 'List' }
     },
     {
+        path: '/exam',
+        name: 'Exam',
+        component: () => import('@/views/Exam.vue'),
+        meta: { title: '出卷', icon: 'Edit' }
+    },
+    {
         path: '/paper',
         name: 'Paper',
         component: () => import('@/views/Paper.vue'),
         meta: { title: '出题历史', icon: 'Paperclip' }
+    },
+    {
+        path: '/feedback',
+        name: 'Feedback',
+        component: () => import('@/views/Feedback.vue'),
+        meta: { title: '用户反馈', icon: 'Message' }
     }
 ]
 

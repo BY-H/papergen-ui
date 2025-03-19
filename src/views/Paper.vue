@@ -8,7 +8,7 @@
             <el-table :data="papers" style="width: 100%">
                 <el-table-column prop="id" label="ID" width="50"></el-table-column>
                 <el-table-column prop="title" label="标题" width="200"></el-table-column>
-                <el-table-column prop="questions" label="题目ID" width="200"></el-table-column>
+                <el-table-column prop="description" label="描述" width="200"></el-table-column>
                 <el-table-column prop="creator" label="创建人" width="150"></el-table-column>
                 <el-table-column prop="created_at" label="创建时间" width="180"></el-table-column>
                 <el-table-column prop="updated_at" label="更新时间" width="180"></el-table-column>
@@ -32,7 +32,7 @@ import Pagination from '@/components/Pagination.vue'
 interface Paper {
     id: number
     title: string
-    questions: string
+    description: string
     creator: string
     created_at: string
     updated_at: string
@@ -49,9 +49,9 @@ const onUpdate = () => {
 }
 
 const papers = ref<Paper[]>([
-    { id: 1, title: '试卷1', questions: '[1, 2, 3]', creator: '张三', created_at: '2025-03-01 10:00', updated_at: '2025-03-05 12:00', status: '已发布' },
-    { id: 2, title: '试卷2', questions: '[4, 5, 6]', creator: '李四', created_at: '2025-03-02 11:00', updated_at: '2025-03-06 13:00', status: '草稿' },
-    { id: 3, title: '试卷3', questions: '[7, 8, 9]', creator: '王五', created_at: '2025-03-03 12:00', updated_at: '2025-03-07 14:00', status: '已发布' }
+    { id: 1, title: '试卷1', description: '[1, 2, 3]', creator: '张三', created_at: '2025-03-01 10:00', updated_at: '2025-03-05 12:00', status: '已发布' },
+    { id: 2, title: '试卷2', description: '[4, 5, 6]', creator: '李四', created_at: '2025-03-02 11:00', updated_at: '2025-03-06 13:00', status: '草稿' },
+    { id: 3, title: '试卷3', description: '[7, 8, 9]', creator: '王五', created_at: '2025-03-03 12:00', updated_at: '2025-03-07 14:00', status: '已发布' }
 ])
 
 const handleAdd = () => {
