@@ -17,7 +17,7 @@
                         <el-icon><i class="el-icon-document"></i></el-icon>
                         <span>题目总数</span>
                     </div>
-                    <div class="text item">100</div>
+                    <div class="text item">{{ questions }}</div>
                 </el-card>
             </el-col>
             <el-col :span="8">
@@ -26,7 +26,7 @@
                         <el-icon><i class="el-icon-edit"></i></el-icon>
                         <span>试卷总数</span>
                     </div>
-                    <div class="text item">50</div>
+                    <div class="text item">{{ papers }}</div>
                 </el-card>
             </el-col>
             <el-col :span="8">
@@ -35,7 +35,7 @@
                         <el-icon><i class="el-icon-user"></i></el-icon>
                         <span>用户总数</span>
                     </div>
-                    <div class="text item">200</div>
+                    <div class="text item">{{ users }}</div>
                 </el-card>
             </el-col>
         </el-row>
@@ -54,8 +54,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { summary as userSummary } from '@/api/user'
+import { summary as questionSummary } from '@/api/question'
+import { summary as paperSummary } from '@/api/paper'
 
 const router = useRouter()
 
@@ -63,10 +66,37 @@ const goToQuestions = () => {
     router.push({ name: 'Question' })
 }
 
+const papers = ref(0)
+const users = ref(0)
+const questions = ref(0)
+
+const fetchSummaryData = async () => {
+    try {
+        // 获取试卷总数
+        const paperResponse: any = await paperSummary()
+        papers.value = paperResponse.total
+
+        // 获取用户总数
+        const userResponse: any = await userSummary()
+        users.value = userResponse.total
+
+        // 获取题目总数
+        const questionResponse: any = await questionSummary()
+        questions.value = questionResponse.total
+    } catch (error) {
+        console.error('获取统计数据失败:', error)
+    }
+}
+
 const announcements = ref([
     { title: '系统维护通知', description: '系统将于2025年3月20日凌晨2点进行维护，预计持续2小时。' },
     { title: '新功能上线', description: '我们新增了试卷自动生成功能，欢迎体验。' }
 ])
+
+// 在组件挂载时调用
+onMounted(() => {
+    fetchSummaryData()
+})
 </script>
 
 <style scoped>

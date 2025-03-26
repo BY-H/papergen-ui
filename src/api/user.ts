@@ -15,3 +15,10 @@ export function register(data: object) {
         data
     })
 }
+
+export function summary() {
+    return request({
+        url: '/api/users/summary',
+        method: 'GET'
+    })
+}
