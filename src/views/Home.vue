@@ -46,7 +46,7 @@
                         <el-icon><i class="el-icon-bell"></i></el-icon>
                         <span>系统公告</span>
                     </div>
-                    <el-alert v-for="(announcement, index) in announcements" :key="index" :title="announcement.title" type="info" show-icon :description="announcement.description" class="announcement-item" />
+                    <el-alert v-for="(announcement, index) in announcements" :key="index" :title="announcement.title" type="info" show-icon :description="announcement.content" class="announcement-item" />
                 </el-card>
             </el-col>
         </el-row>
@@ -55,16 +55,10 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { getNotifications } from '@/api/system'
 import { summary as userSummary } from '@/api/user'
 import { summary as questionSummary } from '@/api/question'
 import { summary as paperSummary } from '@/api/paper'
-
-const router = useRouter()
-
-const goToQuestions = () => {
-    router.push({ name: 'Question' })
-}
 
 const papers = ref(0)
 const users = ref(0)
@@ -89,13 +83,25 @@ const fetchSummaryData = async () => {
 }
 
 const announcements = ref([
-    { title: '系统维护通知', description: '系统将于2025年3月20日凌晨2点进行维护，预计持续2小时。' },
-    { title: '新功能上线', description: '我们新增了试卷自动生成功能，欢迎体验。' }
+    {
+        title: '系统公告',
+        content: '欢迎使用 Papergen，这是一个高效、快捷的组卷系统。'
+    }
 ])
+
+const getNotificationsData = async () => {
+    try {
+        const response: any = await getNotifications()
+        announcements.value = response.list
+    } catch (error) {
+        console.error('获取系统公告失败:', error)
+    }
+}
 
 // 在组件挂载时调用
 onMounted(() => {
     fetchSummaryData()
+    getNotificationsData()
 })
 </script>
 
