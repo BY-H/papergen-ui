@@ -14,3 +14,18 @@ export function addNotifications(data: any) {
         data
     })
 }
+
+export function getFeedbacks() {
+    return request({
+        url: '/api/system/feedbacks/',
+        method: 'get'
+    })
+}
+
+export function addFeedback(data: any) {
+    return request({
+        url: '/api/system/feedbacks/add',
+        method: 'post',
+        data
+    })
+}
