@@ -24,11 +24,13 @@
             <Pagination :pageObj="pageObj" :total="total" :onUpdate="onUpdate" />
         </el-card>
     </div>
+    <AddQuestion :visible.sync="drawerVisible" />
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import Pagination from '@/components/Pagination.vue'
+import AddQuestion from './AddQuestion.vue'
 
 interface Question {
     id: number
@@ -152,8 +154,12 @@ const questions = ref<Question[]>([
     }
 ])
 
+const drawerVisible = ref(false)
+
 const handleAdd = () => {
     console.log('添加题目')
+    drawerVisible.value = true
+    console.log('添加题目2')
 }
 
 const handleEdit = (row: Question) => {

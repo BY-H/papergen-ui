@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/question',
         name: 'Question',
-        component: () => import('@/views/Question.vue'),
+        component: () => import('@/views/Question/Question.vue'),
         meta: { title: '题库管理', icon: 'List' }
     },
     {
