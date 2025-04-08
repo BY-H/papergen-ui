@@ -8,7 +8,11 @@
             <el-table :data="questions" style="width: 100%">
                 <el-table-column prop="id" label="ID" width="50"></el-table-column>
                 <el-table-column prop="question" label="题目" width="300"></el-table-column>
-                <el-table-column prop="question_type" label="类型" width="100"></el-table-column>
+                <el-table-column prop="question_type" label="类型" width="100">
+                    <template v-slot="scope">
+                        <span>{{ questionTypeMap[scope.row.question_type as keyof typeof questionTypeMap] || '未知类型' }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="answer" label="答案" width="200"></el-table-column>
                 <el-table-column prop="hard_level" label="难度" width="100"></el-table-column>
                 <el-table-column prop="score" label="分值" width="100"></el-table-column>
@@ -28,9 +32,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import AddQuestion from './AddQuestion.vue'
+import { getQuestions } from '@/api/question'
 
 interface Question {
     id: number
@@ -55,7 +60,7 @@ const questions = ref<Question[]>([
     {
         id: 1,
         question: '若机器字长为16位，可表示的无符号数范围为：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: '0-65535',
         hard_level: 1,
         score: 5,
@@ -65,7 +70,7 @@ const questions = ref<Question[]>([
     {
         id: 2,
         question: '在TCP/IP协议中，HTTP协议默认使用的端口号是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: '80',
         hard_level: 2,
         score: 10,
@@ -75,7 +80,7 @@ const questions = ref<Question[]>([
     {
         id: 3,
         question: 'Python中，用于定义类的关键字是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: 'class',
         hard_level: 1,
         score: 5,
@@ -85,7 +90,7 @@ const questions = ref<Question[]>([
     {
         id: 4,
         question: '在关系型数据库中，用于从表中查询数据的关键字是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: 'SELECT',
         hard_level: 2,
         score: 10,
@@ -95,7 +100,7 @@ const questions = ref<Question[]>([
     {
         id: 5,
         question: '在HTML中，用于定义超链接的标签是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: '<a>',
         hard_level: 1,
         score: 5,
@@ -105,7 +110,7 @@ const questions = ref<Question[]>([
     {
         id: 6,
         question: '在JavaScript中，用于声明变量的关键字是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: 'let',
         hard_level: 1,
         score: 5,
@@ -115,7 +120,7 @@ const questions = ref<Question[]>([
     {
         id: 7,
         question: '在Linux系统中，用于查看当前目录路径的命令是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: 'pwd',
         hard_level: 2,
         score: 10,
@@ -125,7 +130,7 @@ const questions = ref<Question[]>([
     {
         id: 8,
         question: '在C语言中，用于动态分配内存的函数是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: 'malloc',
         hard_level: 3,
         score: 15,
@@ -135,7 +140,7 @@ const questions = ref<Question[]>([
     {
         id: 9,
         question: '在Git中，用于克隆远程仓库的命令是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: 'git clone',
         hard_level: 2,
         score: 10,
@@ -145,7 +150,7 @@ const questions = ref<Question[]>([
     {
         id: 10,
         question: '在Java中，用于表示单行注释的符号是：______。',
-        question_type: '填空题',
+        question_type: 'fill_blank',
         answer: '//',
         hard_level: 1,
         score: 5,
@@ -154,12 +159,27 @@ const questions = ref<Question[]>([
     }
 ])
 
+const params = ref({
+    date_start: '',
+    date_end: '',
+    page: 1,
+    page_size: 20
+})
+
+const getQuestionsList = async () => {
+    try {
+        const response: any = await getQuestions(params.value)
+        questions.value = response.list
+        console.log(response)
+    } catch (error) {
+        console.error('获取题目列表失败:', error)
+    }
+}
+
 const drawerVisible = ref(false)
 
 const handleAdd = () => {
-    console.log('添加题目')
     drawerVisible.value = true
-    console.log('添加题目2')
 }
 
 const handleEdit = (row: Question) => {
@@ -169,6 +189,18 @@ const handleEdit = (row: Question) => {
 const handleDelete = (row: Question) => {
     console.log('删除题目', row)
 }
+
+const questionTypeMap = {
+    single_choice: '单选题',
+    multiple_choice: '多选题',
+    true_false: '判断题',
+    short_answer: '简答题',
+    fill_blank: '填空题'
+}
+
+onMounted(() => {
+    getQuestionsList()
+})
 </script>
 
 <style scoped>

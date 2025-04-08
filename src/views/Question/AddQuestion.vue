@@ -60,6 +60,7 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { addQuestion } from '@/api/question'
 
 const props = defineProps(['visible'])
 const emit = defineEmits(['update:visible', 'submit'])
@@ -94,7 +95,16 @@ function handleClose() {
     emit('update:visible', false)
 }
 
-function handleSubmit() {}
+function handleSubmit() {
+    formRef.value.validate((valid: boolean) => {
+        if (valid) {
+            console.log(form.value)
+        } else {
+            ElMessage.error('请填写完整的试题信息')
+            return false
+        }
+    })
+}
 </script>
 
 <style scoped>
