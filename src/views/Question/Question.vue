@@ -24,7 +24,7 @@
             <Pagination :pageObj="pageObj" :total="total" :onUpdate="onUpdate" />
         </el-card>
     </div>
-    <AddQuestion :visible.sync="drawerVisible" />
+    <AddQuestion v-model:visible="drawerVisible" />
 </template>
 
 <script lang="ts" setup>
