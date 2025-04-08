@@ -41,6 +41,12 @@ const routes: RouteRecordRaw[] = [
         name: 'Feedback',
         component: () => import('@/views/Feedback.vue'),
         meta: { title: '用户反馈', icon: 'Message' }
+    },
+    {
+        path: '/user',
+        name: 'User',
+        component: () => import('@/views/User.vue'),
+        meta: { title: '用户管理', icon: 'User' }
     }
 ]
 
