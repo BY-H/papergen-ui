@@ -7,7 +7,6 @@
             </div>
             <el-table :data="filteredUsers" style="width: 100%">
                 <el-table-column prop="id" label="用户ID" width="100"></el-table-column>
-                <el-table-column prop="username" label="用户名" width="200"></el-table-column>
                 <el-table-column prop="email" label="邮箱" width="250"></el-table-column>
                 <el-table-column prop="role" label="角色" width="150"></el-table-column>
                 <el-table-column prop="lastLogin" label="最近登录时间" width="200">
