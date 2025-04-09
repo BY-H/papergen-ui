@@ -22,3 +22,19 @@ export function addQuestion(data: any) {
         data
     })
 }
+
+export function editQuestion(data: any) {
+    return request({
+        url: '/api/questions/edit',
+        method: 'PATCH',
+        data
+    })
+}
+
+export function deleteQuestion(data: any) {
+    return request({
+        url: '/api/questions/delete',
+        method: 'POST',
+        data
+    })
+}

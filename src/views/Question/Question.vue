@@ -37,13 +37,15 @@
             <Pagination :pageObj="pageObj" :total="total" :onUpdate="getQuestionsList" />
         </el-card>
     </div>
-    <AddQuestion v-model:visible="drawerVisible" @submit="getQuestionsList" />
+    <AddQuestion v-model:visible="addQuestionVisible" @submit="getQuestionsList" />
+    <EditQuestion v-model:visible="editQuestionVisible" :questionData="editQuestion" @submit="getQuestionsList" />
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import AddQuestion from './AddQuestion.vue'
+import EditQuestion from './EditQuestion.vue'
 import { getQuestions } from '@/api/question'
 
 interface Question {
@@ -85,14 +87,18 @@ const getQuestionsList = async () => {
     }
 }
 
-const drawerVisible = ref(false)
+const addQuestionVisible = ref(false)
 
 const handleAdd = () => {
-    drawerVisible.value = true
+    addQuestionVisible.value = true
 }
 
+const editQuestionVisible = ref(false)
+const editQuestion = ref({})
 const handleEdit = (row: Question) => {
+    editQuestionVisible.value = true
     console.log('编辑题目', row)
+    editQuestion.value = row
 }
 
 const handleDelete = (row: Question) => {
