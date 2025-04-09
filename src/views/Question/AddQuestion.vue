@@ -98,10 +98,22 @@ function handleClose() {
 function handleSubmit() {
     formRef.value.validate(async (valid: boolean) => {
         if (valid) {
+            // 如果是单选题或多选题，将选项拼接到题目后
+            if (form.value.question_type === 'single_choice' || form.value.question_type === 'multiple_choice') {
+                form.value.question = `${form.value.question}\n${form.value.options}`;
+            }
+
             const questionData = {
-                ...form.value}
-            const response:any = await addQuestion(questionData)
-            console.log(response)
+                ...form.value
+            }
+            const response: any = await addQuestion(questionData)
+            if (response.status == "ok") {
+                ElMessage.success('试题添加成功')
+                emit('submit', questionData)
+                handleClose()
+            } else {
+                ElMessage.error('试题添加失败')
+            }
         } else {
             ElMessage.error('请填写完整的试题信息')
             return false

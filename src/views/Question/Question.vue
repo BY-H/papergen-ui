@@ -18,17 +18,17 @@
                 <el-table-column prop="score" label="分值" width="100"></el-table-column>
                 <el-table-column prop="tag" label="标签" width="150"></el-table-column>
                 <el-table-column prop="creator" label="创建人" width="150"></el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="200">
                     <template v-slot="scope">
                         <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
                         <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <Pagination :pageObj="pageObj" :total="total" :onUpdate="onUpdate" />
+            <Pagination :pageObj="pageObj" :total="total" :onUpdate="getQuestionsList" />
         </el-card>
     </div>
-    <AddQuestion v-model:visible="drawerVisible" />
+    <AddQuestion v-model:visible="drawerVisible" @submit="getQuestionsList" />
 </template>
 
 <script lang="ts" setup>
