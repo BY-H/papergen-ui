@@ -46,10 +46,11 @@ import { onMounted, ref } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import AddQuestion from './AddQuestion.vue'
 import EditQuestion from './EditQuestion.vue'
-import { getQuestions } from '@/api/question'
+import { getQuestions,deleteQuestion } from '@/api/question'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 interface Question {
-    id: number
+    ID: number
     question: string
     question_type: string
     answer: string
@@ -101,8 +102,39 @@ const handleEdit = (row: Question) => {
     editQuestion.value = row
 }
 
-const handleDelete = (row: Question) => {
-    console.log('删除题目', row)
+const handleDelete =  async (row: Question) => {
+    ElMessageBox.confirm(
+        '确定要删除该题目吗？' + row.question,
+        '警告',
+        {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+        }
+    )
+    .then(async () => {
+        const response: any = await deleteQuestion({
+            question_ids: String(row.ID),
+        })
+        console.log(response)
+        if (response.status === 'ok') {
+            ElMessage({
+                type: 'success',
+                message: '已成功删除',
+            })
+        } else {
+            ElMessage({
+                type: 'error',
+                message: '删除失败',
+            })
+        }
+    })
+    .catch(() => {
+        ElMessage({
+            type: 'info',
+            message: '已取消',
+        })
+    })
 }
 
 const questionTypeMap = {

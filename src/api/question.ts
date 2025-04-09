@@ -34,7 +34,7 @@ export function editQuestion(data: any) {
 export function deleteQuestion(data: any) {
     return request({
         url: '/api/questions/delete',
-        method: 'POST',
+        method: 'DELETE',
         data
     })
 }
