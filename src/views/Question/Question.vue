@@ -7,7 +7,16 @@
             </div>
             <el-table :data="questions" style="width: 100%">
                 <el-table-column prop="ID" label="ID" width="50"></el-table-column>
-                <el-table-column prop="question" label="题目" width="300"></el-table-column>
+                <el-table-column prop="question" label="题目" width="300">
+                    <template v-slot="scope">
+                        <div>
+                            <p>{{ scope.row.question }}</p>
+                            <p v-if="scope.row.question_type === 'single_choice' || scope.row.question_type === 'multiple_choice'">
+                                {{ scope.row.options }}
+                            </p>
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="question_type" label="类型" width="100">
                     <template v-slot="scope">
                         <span>{{ questionTypeMap[scope.row.question_type as keyof typeof questionTypeMap] || '未知类型' }}</span>
