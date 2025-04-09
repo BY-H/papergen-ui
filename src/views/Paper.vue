@@ -3,7 +3,6 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>试卷列表</span>
-                <el-button style="float: right" type="primary" @click="handleAdd">添加试卷</el-button>
             </div>
             <el-table :data="papers" style="width: 100%">
                 <el-table-column prop="id" label="ID" width="50"></el-table-column>
