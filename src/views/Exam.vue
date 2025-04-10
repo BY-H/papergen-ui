@@ -27,6 +27,9 @@
                             <el-form-item label="填空题数量">
                                 <el-input-number v-model="autoForm.fill_blank_count" :min="0" placeholder="请输入填空题数量"></el-input-number>
                             </el-form-item>
+                            <el-form-item label="判断题数量">
+                                <el-input-number v-model="autoForm.true_false_count" :min="0" placeholder="请输入判断题数量"></el-input-number>
+                            </el-form-item>
                             <el-form-item label="单选题数量">
                                 <el-input-number v-model="autoForm.single_choice_count" :min="0" placeholder="请输入单选题数量"></el-input-number>
                             </el-form-item>
@@ -106,26 +109,79 @@ const autoForm = reactive({
 const questions = ref<Question[]>([]) // 题目列表
 const selectedQuestions = ref<Question[]>([]) // 手动选择的题目
 
-// 知识点标签（模拟数据）
+// 知识点标签
 const tags = ref([])
 const getTag = async() => {
     const response: any = await getTags()
     tags.value = response.tag
 }
 
+const handleAutoGenerate = async () => {
+    // 校验试卷标题和描述
+    if (!form.title.trim()) {
+        ElMessage.error('请先输入试卷标题')
+        return
+    }
+    if (!form.description.trim()) {
+        ElMessage.error('请先输入试卷描述')
+        return
+    }
+
+    // 校验知识点标签是否选择
+    if (!autoForm.tag) {
+        ElMessage.error('请选择知识点标签')
+        return
+    }
+
+    // 校验题目数量
+    const totalQuestions =
+        autoForm.fill_blank_count +
+        autoForm.true_false_count +
+        autoForm.single_choice_count +
+        autoForm.multiple_choice_count +
+        autoForm.short_answer_count
+
+    if (totalQuestions <= 0) {
+        ElMessage.error('题目总数必须大于0')
+        return
+    }
+
+    if (
+        autoForm.fill_blank_count < 0 ||
+        autoForm.true_false_count < 0 ||
+        autoForm.single_choice_count < 0 ||
+        autoForm.multiple_choice_count < 0 ||
+        autoForm.short_answer_count < 0
+    ) {
+        ElMessage.error('每种题目数量必须大于等于0')
+        return
+    }
+}
+
+const handleManualGenerate = async () => {
+    // 校验试卷标题和描述
+    if (!form.title.trim()) {
+        ElMessage.error('请先输入试卷标题')
+        return
+    }
+    if (!form.description.trim()) {
+        ElMessage.error('请先输入试卷描述')
+        return
+    }
+
+    // 校验是否选择了题目
+    if (selectedQuestions.value.length === 0) {
+        ElMessage.error('请至少选择一道题目')
+        return
+    }
+
+    
+}
+
 // 获取题目列表
 const getQuestionsList = async () => {
 }
 
-// 自动组卷
-const handleAutoGenerate = async () => {
-
-}
-
-// 手动组卷
-const handleManualGenerate = async () => {
-
-}
 
 // 题目类型映射
 const questionTypeMap = {
