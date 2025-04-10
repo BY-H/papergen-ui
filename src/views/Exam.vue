@@ -9,6 +9,9 @@
                 <el-form-item label="试卷标题" prop="title">
                     <el-input v-model="form.title" placeholder="请输入试卷标题"></el-input>
                 </el-form-item>
+                <el-form-item label="试卷描述" prop="description">
+                    <el-input v-model="form.description" placeholder="请输入试卷描述"></el-input>
+                </el-form-item>
             </el-form>
 
             <!-- 选项卡：自动组卷和手动组卷 -->
@@ -30,6 +33,9 @@
                             <el-form-item label="多选题数量">
                                 <el-input-number v-model="autoForm.multiple_choice_count" :min="0" placeholder="请输入多选题数量"></el-input-number>
                             </el-form-item>
+                            <el-form-item label="简答题数量">
+                                <el-input-number v-model="autoForm.short_answer_count" :min="0" placeholder="请输入简答题数量"></el-input-number>
+                            </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="handleAutoGenerate">生成试卷</el-button>
                             </el-form-item>
@@ -38,7 +44,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="手动组卷" name="manual">
                     <div class="manual-exam">
-                        <el-table :data="questions" style="width: 100%" @selection-change="handleSelectionChange">
+                        <el-table :data="questions" style="width: 100%">
                             <el-table-column type="selection" width="55"></el-table-column>
                             <el-table-column prop="question" label="题目" width="300">
                                 <template v-slot="scope">
@@ -67,7 +73,9 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { descriptionItemProps, ElMessage } from 'element-plus'
+import { getTags } from '@/api/question'
+import { el } from 'element-plus/es/locales.mjs'
 
 interface Question {
     ID: number
@@ -78,7 +86,8 @@ interface Question {
 }
 
 const form = reactive({
-    title: '' // 试卷标题
+    title: '', // 试卷标题
+    description: '' // 试卷描述
 })
 
 const activeTab = ref('auto') // 当前选项卡，默认自动组卷
@@ -87,8 +96,10 @@ const activeTab = ref('auto') // 当前选项卡，默认自动组卷
 const autoForm = reactive({
     tag: '', // 知识点标签
     fill_blank_count: 0,
+    true_false_count: 0,
     single_choice_count: 0,
-    multiple_choice_count: 0
+    multiple_choice_count: 0,
+    short_answer_count: 0,
 })
 
 // 手动组卷数据
@@ -96,7 +107,11 @@ const questions = ref<Question[]>([]) // 题目列表
 const selectedQuestions = ref<Question[]>([]) // 手动选择的题目
 
 // 知识点标签（模拟数据）
-const tags = ref(['数学', '物理', '化学', '英语'])
+const tags = ref([])
+const getTag = async() => {
+    const response: any = await getTags()
+    tags.value = response.tag
+}
 
 // 获取题目列表
 const getQuestionsList = async () => {
@@ -112,11 +127,6 @@ const handleManualGenerate = async () => {
 
 }
 
-// 处理手动选择的题目
-const handleSelectionChange = (selection: Question[]) => {
-    selectedQuestions.value = selection
-}
-
 // 题目类型映射
 const questionTypeMap = {
     single_choice: '单选题',
@@ -129,6 +139,7 @@ const questionTypeMap = {
 // 页面加载时获取题目列表
 onMounted(() => {
     getQuestionsList()
+    getTag()
 })
 </script>
 

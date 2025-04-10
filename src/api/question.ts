@@ -38,3 +38,10 @@ export function deleteQuestion(data: any) {
         data
     })
 }
+
+export function getTags() {
+    return request({
+        url: '/api/questions/tags',
+        method: 'GET'
+    })
+}
