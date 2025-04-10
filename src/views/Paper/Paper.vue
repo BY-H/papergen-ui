@@ -22,12 +22,14 @@
         </el-card>
         <Pagination :pageObj="pageObj" :total="total" :onUpdate="onUpdate" />
     </div>
+    <ViewPaper v-model:visible="viewPaperVisible" :paperData="viewPaper"/>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import { getPapers } from '@/api/paper'
+import ViewPaper from './ViewPaper.vue'
 
 interface Paper {
     id: number
@@ -61,8 +63,12 @@ const getPaper = async() => {
     total.value = res.total
 }
 
+const viewPaperVisible = ref(false)
+const viewPaper = ref({})
 const handleView = (row: Paper) => {
-    console.log('查看', row)
+    console.log(row)
+    viewPaperVisible.value = true
+    viewPaper.value = row 
 }
 
 const handleDelete = (row: Paper) => {
