@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/paper',
         name: 'Paper',
-        component: () => import('@/views/Paper.vue'),
+        component: () => import('@/views/Paper/Paper.vue'),
         meta: { title: '出题历史', icon: 'Paperclip' }
     },
     {

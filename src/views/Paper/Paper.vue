@@ -11,9 +11,10 @@
                 <el-table-column prop="creator" label="创建人" width="150"></el-table-column>
                 <el-table-column prop="CreatedAt" label="创建时间" width="180"></el-table-column>
                 <el-table-column prop="UpdatedAt" label="更新时间" width="180"></el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="250">
                     <template v-slot="scope">
                         <el-button size="mini" @click="handleView(scope.row)">查看</el-button>
+                        <el-button size="mini">下载</el-button>
                         <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>

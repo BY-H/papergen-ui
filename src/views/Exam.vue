@@ -160,6 +160,29 @@ const handleAutoGenerate = async () => {
         ElMessage.error('每种题目数量必须大于等于0')
         return
     }
+    const data = {
+        title: form.title,
+        description: form.description,
+        tag: autoForm.tag,
+        fill_blank_count: autoForm.fill_blank_count,
+        true_false_count: autoForm.true_false_count,
+        single_choice_count: autoForm.single_choice_count,
+        multiple_choice_count: autoForm.multiple_choice_count,
+        short_answer_count: autoForm.short_answer_count
+    }
+    try {
+        const response: any = await autoCreatePaper(data)
+        if (response.status == 'ok') {
+            ElMessage.success('试卷生成成功')
+        } else {
+            ElMessage.error('试卷生成失败')
+            ElMessage.error(response.error)
+        }
+    } catch (error: any) {
+        console.error('自动组卷失败:', error)
+        ElMessage.error('自动组卷失败')
+        ElMessage.error(error.response.data.error)
+    }
 }
 
 // 手动组卷数据
@@ -192,17 +215,17 @@ const handleManualGenerate = async () => {
     const selectIds = getSelectedQuestionIds()
     console.log(selectIds)
 
-    const params = {
+    const data = {
         title: form.title,
         description: form.description,
         question_ids: selectIds
     }
     try {
-        const response: any = await manualCreatePaper(params)
+        const response: any = await manualCreatePaper(data)
         if (response.status == 'ok') {
             ElMessage.success('试卷生成成功')
         } else {
-            ElMessage.error('试卷生成失败')
+            ElMessage.error(response.error)
         }
     } catch (error) {
         console.error('手动组卷失败:', error)
