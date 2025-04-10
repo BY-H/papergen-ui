@@ -14,7 +14,7 @@
                 <el-table-column label="操作" width="250">
                     <template v-slot="scope">
                         <el-button size="mini" @click="handleView(scope.row)">查看</el-button>
-                        <el-button size="mini">下载</el-button>
+                        <el-button size="mini" @click="handleDownload(scope.row)">下载</el-button>
                         <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
@@ -30,6 +30,7 @@ import { onMounted, ref } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import { getPapers } from '@/api/paper'
 import ViewPaper from './ViewPaper.vue'
+import { exportPaper } from '@/api/paper'
 
 interface Paper {
     id: number
@@ -74,6 +75,37 @@ const handleView = (row: Paper) => {
 const handleDelete = (row: Paper) => {
     console.log('删除试卷', row)
 }
+
+const handleDownload = async (row: any) => {
+    try {
+        // 确保请求返回的是二进制数据
+        const response: any = await exportPaper(
+            { paper_id: String(row.ID) },
+            { responseType: 'blob' } // 确保 responseType 为 'blob'
+        );
+
+        // 直接使用 response.data，不需要手动添加 "\ufeff"
+        const blob = new Blob([response], {
+            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        });
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${row.title}.docx`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        console.log('试卷下载成功');
+    } catch (error) {
+        console.error('试卷下载失败:', error);
+    }
+
+
+};
+
 
 onMounted(() => {
     getPaper()

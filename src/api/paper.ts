@@ -30,3 +30,20 @@ export function manualCreatePaper(data: any) {
         data
     })
 }
+
+export function deletePaper(data: any) {
+    return request({
+        url: '/api/papers/delete',
+        method: 'DELETE',
+        data
+    })
+}
+
+export function exportPaper(data: any, config: any = {}) { 
+    return request({
+        url: '/api/papers/export',
+        method: 'POST',
+        data,
+        ...config
+    })
+}
