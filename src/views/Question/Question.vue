@@ -34,7 +34,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <Pagination :pageObj="pageObj" :total="total" :onUpdate="getQuestionsList" />
+            <Pagination :pageObj="pageObj" :total="total" :onUpdate="onUpdate" />
         </el-card>
     </div>
     <AddQuestion v-model:visible="addQuestionVisible" @submit="getQuestionsList" />
@@ -65,7 +65,7 @@ const pageObj = ref({
     page_size: 20
 })
 const onUpdate = () => {
-    console.log('更新页码')
+    getQuestionsList()
 }
 
 const questions = ref<Question[]>([])

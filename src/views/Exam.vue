@@ -47,8 +47,9 @@
                 </el-tab-pane>
                 <el-tab-pane label="手动组卷" name="manual">
                     <div class="manual-exam">
-                        <el-table :data="questions" style="width: 100%">
+                        <el-table :data="questions" style="width: 100%" @selection-change="handleSelectionChange">
                             <el-table-column type="selection" width="55"></el-table-column>
+                            <el-table-column prop="ID" label="ID" width="50"></el-table-column>
                             <el-table-column prop="question" label="题目" width="300">
                                 <template v-slot="scope">
                                     <div>
@@ -64,8 +65,14 @@
                                     <span>{{ questionTypeMap[scope.row.question_type as keyof typeof questionTypeMap] || '未知类型' }}</span>
                                 </template>
                             </el-table-column>
+                            <el-table-column prop="answer" label="答案" width="200"></el-table-column>
+                            <el-table-column prop="hard_level" label="难度" width="100"></el-table-column>
+                            <el-table-column prop="score" label="分值" width="100"></el-table-column>
                             <el-table-column prop="tag" label="标签" width="150"></el-table-column>
+                            <el-table-column prop="creator" label="创建人" width="150"></el-table-column>
                         </el-table>
+                        <!-- 分页组件 -->
+                        <Pagination :pageObj="pageObj" :total="total" :onUpdate="getQuestionsList" />
                         <el-button type="primary" @click="handleManualGenerate" style="margin-top: 20px;">生成试卷</el-button>
                     </div>
                 </el-tab-pane>
@@ -78,7 +85,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { descriptionItemProps, ElMessage } from 'element-plus'
 import { getTags } from '@/api/question'
-import { el } from 'element-plus/es/locales.mjs'
+import { autoCreatePaper, manualCreatePaper } from '@/api/paper'
+import { getQuestions } from '@/api/question'
 
 interface Question {
     ID: number
@@ -104,10 +112,6 @@ const autoForm = reactive({
     multiple_choice_count: 0,
     short_answer_count: 0,
 })
-
-// 手动组卷数据
-const questions = ref<Question[]>([]) // 题目列表
-const selectedQuestions = ref<Question[]>([]) // 手动选择的题目
 
 // 知识点标签
 const tags = ref([])
@@ -158,6 +162,17 @@ const handleAutoGenerate = async () => {
     }
 }
 
+// 手动组卷数据
+const questions = ref<Question[]>([]) // 题目列表
+const selectedQuestions = ref<Question[]>([]) // 手动选择的题目
+    const handleSelectionChange = (selection: Question[]) => {
+    selectedQuestions.value = selection
+}
+const getSelectedQuestionIds = () => {
+    const selectedIds = selectedQuestions.value.map(question => question.ID)
+    console.log('选中的题目ID:', selectedIds)
+    return selectedIds
+}
 const handleManualGenerate = async () => {
     // 校验试卷标题和描述
     if (!form.title.trim()) {
@@ -174,12 +189,48 @@ const handleManualGenerate = async () => {
         ElMessage.error('请至少选择一道题目')
         return
     }
+    const selectIds = getSelectedQuestionIds()
+    console.log(selectIds)
 
-    
+    const params = {
+        title: form.title,
+        description: form.description,
+        question_ids: selectIds
+    }
+    try {
+        const response: any = await manualCreatePaper(params)
+        if (response.status == 'ok') {
+            ElMessage.success('试卷生成成功')
+        } else {
+            ElMessage.error('试卷生成失败')
+        }
+    } catch (error) {
+        console.error('手动组卷失败:', error)
+        ElMessage.error('手动组卷失败')
+    }
 }
 
+// 分页相关数据
+const total = ref(0)
+const pageObj = ref({
+    page: 1,
+    page_size: 20
+})
+const onUpdate = () => {
+    console.log('更新页码')
+}
 // 获取题目列表
 const getQuestionsList = async () => {
+    try {
+        const response: any = await getQuestions({
+            page: pageObj.value.page,
+            page_size: pageObj.value.page_size
+        })
+        questions.value = response.list
+        total.value = response.total
+    } catch (error) {
+        console.error('获取题目列表失败:', error)
+    }
 }
 
 

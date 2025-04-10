@@ -7,10 +7,11 @@ export function summary() {
     })
 }
 
-export function getPapers() {
+export function getPapers(params: any) {
     return request({
         url: '/api/papers/list',
-        method: 'GET'
+        method: 'GET',
+        params
     })
 }
 
